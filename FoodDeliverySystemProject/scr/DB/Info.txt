@@ -1,0 +1,17 @@
+C:\Users\1>mysql --version
+
+C:\Users\1>mysql -u root -p
+Enter password: **************(V@na-gu49947@7)
+
+mysql> SHOW DATABASES;
+
+mysql> CREATE DATABASE online_food_delivery;
+Query OK, 1 row affected (0.02 sec)
+
+USE online_food_delivery;
+
+SHOW TABLES;
+
+mysql> DESCRIBE users;
+
+SELECT * FROM users; //read
