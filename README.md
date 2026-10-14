@@ -1,81 +1,103 @@
 # Food Delivery System
 
-An online food delivery system built with **Java** and **MySQL**, simulating how real-world platforms like Uber Eats or Just Eat work. Users can browse restaurants, order food, track payments, and manage their profile — all in one application.
+An online food delivery desktop application built with **Java, Swing and MySQL**, simulating how platforms like Uber Eats or Just Eat work. Users can browse restaurants, order food, pay, and manage their profile.
 
-Developed as part of the Object-Oriented Software Design (OOSD) module.
-
----
-
-## Description
-
-This project allows users to create an account, log in, and manage their personal information (name, address, contact details). Once logged in, users can explore restaurants and menu items, place orders, and view their order and payment history.
-
-The system is built using **object-oriented programming principles**, with functionality split across dedicated classes for users, orders, restaurants, and payments. Data is persisted in a **MySQL** database with full **CRUD** (Create, Read, Update, Delete) support across all core entities.
+Developed as part of the **Object-Oriented Software Design (OOSD)** module.
 
 ## Features
 
 - User registration and login
-- View and update personal information (name, address, etc.)
-- Browse restaurants and menu items
-- Add/remove items from cart and place orders
-- Make payments (card or cash)
+- View and update personal information (name, address, contact details)
+- Browse restaurants and menu items by category
+- Add / remove items in a cart and place an order
+- Pay by card or cash
 - View order history and payment history
-- Full CRUD operations on users, restaurants, menu items, and orders
+- CRUD operations for users, restaurants, menu items, orders and payments in the DAO layer (see [CRUD coverage](#crud-coverage))
 
-## Tech Stack
+## Tech stack
 
-- **Language:** Java
-- **Database:** MySQL
-- **Data Access:** DAO pattern with `PreparedStatement` (SQL-injection safe)
-- **UI:** Java Swing (GUI-based)
-- **Architecture:** Object-Oriented Design
+| Area          | Technology                                    |
+|---------------|-----------------------------------------------|
+| Language      | Java                                          |
+| GUI           | Java Swing                                    |
+| Database      | MySQL                                         |
+| Data access   | JDBC, DAO pattern, `PreparedStatement`        |
+| Documentation | Javadoc, ER diagram, use cases, test cases    |
 
-## Database Structure
+## Screenshots
 
-The system is built on 8 core tables:
+<!-- Add 3–4 screenshots to docs/screenshots and link them here, e.g.: -->
+<!-- ![Login](docs/screenshots/login.png) -->
 
-| Table | Purpose |
-|---|---|
-| `users` | User profiles, credentials, delivery address |
-| `restaurants` | Restaurant listings and details |
-| `categories` | Food categories (e.g. Pizza, Drinks) |
-| `menu_items` | Menu items, linked to restaurants and categories |
-| `orders` | Order records with status tracking |
-| `order_items` | Individual items within each order |
-| `payments` | Active payment transactions |
-| `payment_history` | Permanent archive of all payments |
+## Database
 
-*Full ER diagrams and table schemas are available in the [project documentation](./docs).*
+The system uses 8 tables:
 
-## Key Design Highlights
+| Table             | Purpose                                         |
+|-------------------|-------------------------------------------------|
+| `users`           | User profiles, credentials, delivery address    |
+| `restaurants`     | Restaurant listings and details                 |
+| `categories`      | Food categories (e.g. Pizza, Drinks)            |
+| `menu_items`      | Menu items linked to restaurants and categories |
+| `orders`          | Order records with status tracking              |
+| `order_items`     | Individual items within each order              |
+| `payments`        | Payment transactions                            |
+| `payment_history` | Permanent archive of all payments               |
 
-- **Prepared statements** used throughout the DAO layer to prevent SQL injection
-- **Dynamic UI rendering** — restaurant cards are generated dynamically from database data
-- **Separation of concerns** between GUI classes (e.g. `DashboardGUI`, `AccountGUI`) and data access classes (e.g. `UserDAO`, `RestaurantDAO`)
+The ER diagram is in `ER Diagram.pdf`.
 
-## Getting Started
+## Project structure
+
+```
+src/
+├── DB/           # DatabaseConnection
+├── User/         # Login, register, account GUIs, UserDAO, Cart, Session
+├── Restaurant/   # Restaurant model and RestaurantDAO
+├── MenuItem/     # Menu items, categories, MenuItemDAO
+├── Order/        # Orders, order items, OrderDAO, OrderItemsDAO
+└── Payment/      # Payment GUI and PaymentDAO
+docs/             # Generated Javadoc
+database/         # SQL schema
+```
+
+## Getting started
 
 ### Prerequisites
-- Java (JDK 8+)
-- MySQL Server
+
+- JDK [your version] or newer (check with `java -version`)
+- MySQL Server 8+
 
 ### Setup
-1. Clone the repository
-   ```bash
+
+1. **Clone the repository**
+```
    git clone https://github.com/Mashuka18/OOSD-Project.git
-   ```
-2. Set up the MySQL database using the schema provided in `/docs`
-3. Update database connection details in `DatabaseConnection.java`
-4. Compile and run the application
+```
+2. **Create the database** and import the schema:
+```
+   mysql -u <user> -p -e "CREATE DATABASE <db_name>;"
+   mysql -u <user> -p <db_name> < database/schema.sql
+```
+3. **Configure the connection** in `src/DB/DatabaseConnection.java` (URL, user, password). Do not commit your real password.
+4. **Run the application**
+   - From an IDE (VS Code, IntelliJ, Eclipse): run `User.LoginUserGUI`
+   - Or from the terminal:
+```
+     java -jar "OOSD OFDS PROJECT draft.jar"
+```
 
-## Documentation
+## How an order works
 
-Full project documentation — including requirements, ER diagrams, use case specifications, and test cases — is available in the `/docs` folder.
+Menu → Cart → Checkout (delivery address) → Payment. An order is created with status `PENDING`, its items and payment are saved, and the status changes to `PAID`.
 
-## Conclusion
+## Key design highlights
 
-This project demonstrates practical skills in Java application development, relational database design, and object-oriented software architecture. Potential future improvements include real-time order tracking, enhanced security (password hashing), and integration with external payment gateways.
+- **DAO pattern:** all SQL lives in dedicated DAO classes (`UserDAO`, `RestaurantDAO`, `OrderDAO`, `PaymentDAO`, ...)
+- **`PreparedStatement` everywhere** to prevent SQL injection
+- **Dynamic UI:** restaurant cards are generated from database data
+- **Packages by domain** (User, Order, Payment, MenuItem, Restaurant)
+- `try-with-resources` for connections and statements
 
----
+## CRUD coverage
 
-**Author:** Mariia Vanaga
+Create, read, update and
