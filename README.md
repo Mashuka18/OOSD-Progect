@@ -64,7 +64,7 @@ database/         # SQL schema
 
 ### Prerequisites
 
-- JDK [your version] or newer (check with `java -version`)
+- - JDK 25 
 - MySQL Server 8+
 
 ### Setup
