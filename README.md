@@ -100,4 +100,22 @@ Menu → Cart → Checkout (delivery address) → Payment. An order is created w
 
 ## CRUD coverage
 
-Create, read, update and
+Create, read, update and delete are implemented in the DAO classes and demonstrated by standalone classes (e.g. `InsertMenuItem`, `UpdateRestaurant`, `DeletePayment`). The GUI covers registration, login, profile update, browsing, ordering and payment.
+
+## Known limitations & roadmap
+
+- [ ] **Hash passwords** (currently stored as plain text)
+- [ ] **Wrap checkout in a database transaction** so creating the order, its items and the payment either all succeed or all roll back
+- [ ] **Move business logic out of the GUI** into a service layer (MVC) and replace the static `Cart` / `Session` classes with injected objects
+- [ ] **Read database credentials** from environment variables or a git-ignored config file
+- [ ] **Use a connection pool** instead of opening a connection per query
+- [ ] Add automated tests (JUnit) for the DAOs and order total calculation
+- [ ] Real-time order tracking and integration with an external payment gateway
+
+## Documentation
+
+Javadoc is in the `docs/` folder (open `docs/index.html`). Requirements, use case specifications and test cases are in `online food delivery system oosd.docx`.
+
+## Author
+
+Mariia Vanaga
